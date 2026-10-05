@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090509">
+<title>Administrador | NELQP para Radios</title>
+<style>
+:root{--bg:#080608;--card:#171117;--pink:#ff176d;--pink2:#ff4d96;--yellow:#ffd84d;--cyan:#55e7ff;--violet:#9d67ff;--text:#fff;--muted:#d0c8cf;--line:rgba(255,255,255,.13);--green:#5ee89a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.5;min-height:100vh;background:radial-gradient(circle at 85% 9%,rgba(255,23,109,.25),transparent 25rem),radial-gradient(circle at 7% 31%,rgba(157,103,255,.14),transparent 24rem),radial-gradient(circle at 90% 62%,rgba(85,231,255,.08),transparent 22rem),var(--bg)}
+a{text-decoration:none;color:inherit}.wrap{width:min(1600px,calc(100% - 48px));margin:auto}
+header{position:sticky;top:0;z-index:30;background:rgba(8,6,8,.87);backdrop-filter:blur(15px);border-bottom:1px solid var(--line)}
+nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:12px;font-weight:900}.brand img{width:76px;height:50px;object-fit:contain}
+.btn,button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:49px;padding:0 21px;border-radius:15px;border:1px solid var(--line);font-weight:900;background:rgba(255,255,255,.04);color:#fff;cursor:pointer;transition:.18s;font-size:15px}
+.btn:hover,button:hover{transform:translateY(-2px)}button:disabled{opacity:.55;cursor:wait}.primary{border:0;background:linear-gradient(135deg,var(--pink2),var(--pink));box-shadow:0 12px 30px rgba(255,23,109,.28)}
+.commercial-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:18px;align-items:end;margin-top:22px}.commercial-grid label{margin-top:0}.commercial-grid input{width:100%}.commercial-action{display:flex;align-items:end}.commercial-action button{white-space:nowrap}.small{font-size:13px;color:var(--muted);margin-top:5px}
+main{padding:52px 0 75px}.eyebrow{display:inline-flex;padding:8px 13px;border-radius:999px;border:1px solid rgba(255,23,109,.5);background:rgba(255,23,109,.1);color:#ff86b4;font-size:13px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+h1{font-size:clamp(39px,6vw,66px);line-height:.96;letter-spacing:-.055em;margin:18px 0}.pink{color:var(--pink)}.lead{font-size:18px;color:#eee8ed;max-width:720px}
+.shell{width:min(1500px,100%);margin:0 auto}.card{border:1px solid var(--line);background:linear-gradient(145deg,#1a1419,#0f0d0f);padding:28px;border-radius:24px;box-shadow:0 24px 70px rgba(0,0,0,.28);margin-bottom:17px}
+.login{max-width:620px;margin:28px auto}.login h2,.card h2{margin:0 0 8px}.muted{color:var(--muted)}
+label{display:block;font-weight:900;margin:16px 0 7px}input{width:100%;height:52px;border-radius:14px;border:1px solid var(--line);background:#0c090c;color:#fff;padding:0 15px;font-size:16px;outline:none}input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,23,109,.12)}
+.hidden{display:none!important}.between{display:flex;justify-content:space-between;align-items:center;gap:14px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.badge{display:inline-flex;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:950;text-transform:uppercase;border:1px solid var(--line)}
+.badge.activo,.badge.activa,.badge.pagada,.badge.aprobado{background:rgba(94,232,154,.12);color:#7af0ac;border-color:rgba(94,232,154,.28)}.badge.pendiente{background:rgba(255,216,77,.09);color:var(--yellow);border-color:rgba(255,216,77,.25)}.badge.suspendido{background:rgba(255,23,109,.12);color:#ff9dc2;border-color:rgba(255,23,109,.35)}
+.ok,.error{display:block;padding:13px 15px;border-radius:14px;margin-top:14px}.ok{background:rgba(94,232,154,.12);color:#91f4b8;border:1px solid rgba(94,232,154,.25)}.error{background:rgba(255,23,109,.12);color:#ff9dc2;border:1px solid rgba(255,23,109,.28)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:17px}.stat{padding:20px;border:1px solid var(--line);border-radius:18px;background:#0c090c}.stat .n{font-size:31px;font-weight:950}.stat .t{color:var(--muted)}
+.table-wrap{overflow:visible;border:1px solid var(--line);border-radius:18px;margin-top:18px}table{width:100%;border-collapse:collapse;min-width:0;table-layout:auto;background:#0c090c}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;text-transform:uppercase;color:#ff86b4;letter-spacing:.04em}tr:last-child td{border-bottom:0}.radio-name{font-weight:900;font-size:16px}.small{font-size:13px;color:var(--muted)}
+.radio-row{cursor:pointer}.radio-row:hover{background:rgba(255,23,109,.06)}
+.detail-card{margin-top:18px;border:1px solid rgba(255,23,109,.32);background:linear-gradient(145deg,#1a1419,#0f0d0f);padding:26px;border-radius:22px}
+.detail-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.detail-head h2{margin:0 0 4px;font-size:28px}.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.detail-item{border:1px solid var(--line);background:#0c090c;border-radius:15px;padding:14px}
+.detail-item .k{display:block;color:#ff86b4;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+.detail-item .v{font-weight:800;word-break:break-word}.detail-section{margin-top:20px}
+.detail-section h3{margin:0 0 10px}.mini-table{width:100%;min-width:0}
+.close-detail{min-height:40px;padding:0 14px}.admin-tools{margin-top:20px;padding:18px;border:1px solid var(--line);border-radius:18px;background:#0c090c}.admin-tools h3{margin:0 0 6px}.admin-tools-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end}.admin-tools-row label{margin-top:10px}.admin-tools-row button{height:52px}.admin-tools-msg{grid-column:1/-1}.danger{background:rgba(255,23,109,.13);border-color:rgba(255,23,109,.42);color:#ff9dc2}.success-action{background:rgba(94,232,154,.12);border-color:rgba(94,232,154,.35);color:#91f4b8}@media(max-width:650px){.admin-tools-row{grid-template-columns:1fr}}
+.footer{text-align:center;color:#948c92;padding:0 0 35px}.footer img{width:140px;max-height:80px;object-fit:contain;margin-bottom:8px}
+@media(max-width:850px){.detail-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){.detail-grid{grid-template-columns:1fr}.wrap{width:calc(100% - 22px)}.brand span{display:none}main{padding-top:34px}.card{padding:22px 18px}.grid,.stats{grid-template-columns:1fr}h1{font-size:44px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+<a class="brand" href="index.html"><img src="logo-on.jpg" alt="La ON Radio"><span>NELQP · ADMINISTRACIÓN</span></a>
+<button id="salirBtn" class="hidden">Cerrar sesión</button>
+</nav></div></header>
+
+<main><div class="wrap shell">
+<div id="loginView">
+  <div class="eyebrow">🔐 Acceso privado</div>
+  <h1>Administración <span class="pink">NELQP.</span></h1>
+  <p class="lead">Panel exclusivo de La ON Radio para administrar las emisoras adheridas a la retransmisión.</p>
+  <section class="card login">
+    <h2>Ingresar</h2>
+    <div class="muted">Usá tus credenciales de administrador.</div>
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" value="info.laonradio@gmail.com" required>
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <div style="margin-top:20px"><button id="loginBtn" class="primary" type="submit">Ingresar al administrador</button></div>
+      <div id="loginMsg"></div>
+    </form>
+  </section>
+</div>
+
+<div id="adminView" class="hidden">
+  <div class="eyebrow">📻 Panel administrativo</div>
+  <h1>Radios en <span class="pink">NELQP.</span></h1>
+  <p class="lead">Información de las emisoras registradas para identificar correctamente cada retransmisión.</p>
+  <div id="adminMsg"></div>
+  <div class="stats">
+    <div class="stat"><div id="totalRadios" class="n">—</div><div class="t">Radios registradas</div></div>
+    <div class="stat"><div id="totalActivas" class="n">—</div><div class="t">Activas</div></div>
+    <div class="stat"><div id="totalPendientes" class="n">—</div><div class="t">Pendientes</div></div>
+  </div>
+  <section class="card" id="comercialCard">
+    <div class="between">
+      <div>
+        <h2>💰 Configuración comercial</h2>
+        <div class="muted">Estos valores se aplican únicamente a nuevas contrataciones. Las ya creadas conservan su importe original.</div>
+      </div>
+      <button id="recargarPreciosBtn" type="button">Recargar valores</button>
+    </div>
+    <div class="commercial-grid">
+      <div>
+        <label for="precioMensual">Precio mensual (ARS)</label>
+        <input id="precioMensual" type="number" min="1" step="1" inputmode="numeric">
+        <div class="small">Valor del mes completo.</div>
+      </div>
+      <div>
+        <label for="precioPrograma">Precio por programa (ARS)</label>
+        <input id="precioPrograma" type="number" min="1" step="1" inputmode="numeric">
+        <div class="small">Se usa para calcular altas proporcionales con el mes ya iniciado.</div>
+      </div>
+      <div>
+        <label for="vigenteDesde">Vigente desde</label>
+        <input id="vigenteDesde" type="date">
+        <div class="small">Fecha comercial de referencia del cambio.</div>
+      </div>
+      <div class="commercial-action">
+        <button id="guardarPreciosBtn" class="primary" type="button">Guardar nuevos precios</button>
+      </div>
+    </div>
+    <div id="preciosMsg"></div>
+  </section>
+
+  <section class="card">
+    <div class="between"><div><h2>Emisoras</h2><div class="muted">Datos cargados por cada radio al registrarse.</div></div><button id="actualizarBtn">Actualizar</button></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Emisora</th><th>Tipo</th><th>Ubicación</th><th>Responsable</th><th>Contacto</th><th>Estado</th><th>Vencimiento</th></tr></thead>
+        <tbody id="radiosBody"></tbody>
+      </table>
+    </div>
+    <div id="radioDetalle" class="hidden detail-card"></div>
+  </section>
+</div>
+</div></main>
+
+<div class="footer"><div class="wrap"><img src="logo-on.jpg" alt="La ON Radio"><div>NO ES LO QUE PARECE · Una producción de La ON Radio</div></div></div>
+
+<script>
+const API="https://nelqp-radios-api.guillermocaballini.workers.dev";
+const tokenKey="nelqp_admin_token";
+const $=id=>document.getElementById(id);
+let radiosCache=[];
+
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function fecha(f){if(!f)return "—";const s=String(f).slice(0,10).split("-");return s.length===3?`${s[2]}/${s[1]}/${s[0]}`:esc(f)}
+function msg(el,text,tipo="error"){el.innerHTML=`<div class="${tipo}">${esc(text)}</div>`}
+function limpiar(el){el.innerHTML=""}
+function mostrarLogin(){ $("loginView").classList.remove("hidden");$("adminView").classList.add("hidden");$("salirBtn").classList.add("hidden") }
+function mostrarAdmin(){ $("loginView").classList.add("hidden");$("adminView").classList.remove("hidden");$("salirBtn").classList.remove("hidden") }
+
+async function request(path,options={}){
+  const headers={"Content-Type":"application/json",...(options.headers||{})};
+  const token=localStorage.getItem(tokenKey);
+  if(token) headers.Authorization=`Bearer ${token}`;
+  const r=await fetch(API+path,{...options,headers});
+  let data;
+  try{data=await r.json()}catch{data={ok:false,error:"Respuesta inválida del servidor"}}
+  if(!r.ok||data.ok===false) throw Object.assign(new Error(data.error||"No se pudo completar la operación"),{status:r.status});
+  return data;
+}
+
+function tipoRadio(r){
+  const t=String(r.tipo_emisora||"").toLowerCase();
+  if(t==="fm") return `📻 FM${r.frecuencia?` ${esc(r.frecuencia)}`:""}`;
+  if(t==="online") return `🌐 Online${r.sitio_web?`<div class="small">${esc(r.sitio_web)}</div>`:""}`;
+  if(t==="fm_online"||t==="fm + online"||t==="fm+online") return `📡 FM + Online${r.frecuencia?` · ${esc(r.frecuencia)}`:""}${r.sitio_web?`<div class="small">${esc(r.sitio_web)}</div>`:""}`;
+  return esc(r.tipo_emisora||"—");
+}
+
+function renderRadios(radios){
+  radiosCache=radios;
+  $("totalRadios").textContent=radios.length;
+  $("totalActivas").textContent=radios.filter(r=>String(r.estado).toLowerCase()==="activo").length;
+  $("totalPendientes").textContent=radios.filter(r=>String(r.estado).toLowerCase()==="pendiente").length;
+  $("radiosBody").innerHTML=radios.length?radios.map(r=>`
+    <tr class="radio-row" data-radio-id="${esc(r.id)}" title="Ver ficha de la emisora">
+      <td><div class="radio-name">${esc(r.nombre_radio||"—")}</div><div class="small">${esc(r.email||"")}</div></td>
+      <td>${tipoRadio(r)}</td>
+      <td>${esc(r.ciudad||"—")}${r.provincia?`, ${esc(r.provincia)}`:""}${r.pais?`<div class="small">${esc(r.pais)}</div>`:""}</td>
+      <td>${esc(r.responsable||"—")}</td>
+      <td>${esc(r.telefono||"—")}</td>
+      <td><span class="badge ${esc(String(r.estado||"").toLowerCase())}">${esc(r.estado||"—")}</span></td>
+      <td>${fecha(r.fecha_vencimiento)}</td>
+    </tr>`).join(""):`<tr><td colspan="7">Todavía no hay radios registradas.</td></tr>`;
+}
+
+
+function valor(v){return (v===null||v===undefined||String(v).trim()==="")?"—":esc(v)}
+function item(k,v){return `<div class="detail-item"><span class="k">${esc(k)}</span><div class="v">${v}</div></div>`}
+
+async function abrirFicha(radioId){
+  const r=radiosCache.find(x=>String(x.id)===String(radioId));
+  if(!r)return;
+  const box=$("radioDetalle");
+  box.classList.remove("hidden");
+  box.innerHTML=`
+    <div class="detail-head">
+      <div><div class="eyebrow">📻 Ficha de la emisora</div><h2 style="margin-top:12px">${esc(r.nombre_radio||"—")}</h2><div class="muted">${esc(r.email||"")}</div></div>
+      <button class="close-detail" id="cerrarDetalle">Cerrar</button>
+    </div>
+    <div class="detail-grid">
+      ${item("Estado",`<span class="badge ${esc(String(r.estado||"").toLowerCase())}">${esc(r.estado||"—")}</span>`)}
+      ${item("Vencimiento",fecha(r.fecha_vencimiento))}
+      ${item("Responsable",valor(r.responsable))}
+      ${item("Teléfono",valor(r.telefono))}
+      ${item("Ubicación",`${valor(r.ciudad)}${r.provincia?`, ${esc(r.provincia)}`:""}${r.pais?`, ${esc(r.pais)}`:""}`)}
+      ${item("Tipo de emisora",tipoRadio(r))}
+      ${item("Frecuencia / dial",valor(r.frecuencia))}
+      ${item("Página web",r.sitio_web?esc(r.sitio_web):"—")}
+      ${item("ID de radio",valor(r.id))}
+    </div>
+    <div class="admin-tools">
+      <h3>Administrar emisora</h3>
+      <div class="muted">Podés asignarle una nueva contraseña de acceso a esta radio.</div>
+      <div class="admin-tools-row">
+        <div>
+          <label for="nuevaPasswordRadio">Nueva contraseña</label>
+          <input id="nuevaPasswordRadio" type="password" autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres">
+        </div>
+        <button id="cambiarPasswordBtn" class="primary" type="button">Cambiar contraseña</button>
+        <div id="passwordRadioMsg" class="admin-tools-msg"></div>
+      </div>
+      <div style="height:1px;background:var(--line);margin:20px 0"></div>
+      <h3>Estado administrativo</h3>
+      <div class="muted">${String(r.estado||"").toLowerCase()==="suspendido"
+        ?"Esta emisora está suspendida. Podés reactivarla sin borrar sus pagos ni contrataciones."
+        :"Podés suspender temporalmente esta emisora sin borrar sus pagos, contrataciones ni vencimiento."}</div>
+      <div style="margin-top:14px">
+        <button id="estadoRadioBtn" class="${String(r.estado||"").toLowerCase()==="suspendido"?"success-action":"danger"}" type="button">
+          ${String(r.estado||"").toLowerCase()==="suspendido"?"Reactivar emisora":"Suspender emisora"}
+        </button>
+        <div id="estadoRadioMsg"></div>
+      </div>
+      <div style="height:1px;background:var(--line);margin:20px 0"></div>
+      <h3>Renovación del próximo mes</h3>
+      <div class="muted">Generá el link de pago y abrí WhatsApp con el recordatorio listo para enviar. Si la emisora ya renovó, el sistema te lo avisará y no generará otro cobro.</div>
+      <div style="margin-top:14px">
+        <button id="recordatorioRenovacionBtn" class="success-action" type="button">💬 Enviar recordatorio de renovación</button>
+        <div id="recordatorioRenovacionMsg"></div>
+      </div>
+    </div>
+    <div id="detalleServidor" class="detail-section"><div class="muted">Cargando contrataciones y pagos…</div></div>`;
+  $("cerrarDetalle").onclick=()=>box.classList.add("hidden");
+
+  $("cambiarPasswordBtn").onclick=async()=>{
+    const input=$("nuevaPasswordRadio");
+    const boton=$("cambiarPasswordBtn");
+    const salida=$("passwordRadioMsg");
+    const nueva=input.value;
+
+    limpiar(salida);
+
+    if(nueva.length<8){
+      msg(salida,"La nueva contraseña debe tener al menos 8 caracteres.");
+      input.focus();
+      return;
+    }
+
+    if(!confirm(`¿Cambiar la contraseña de ${r.nombre_radio||"esta radio"}?`)) return;
+
+    boton.disabled=true;
+    try{
+      const data=await request("/api/admin/reset-password-radio",{
+        method:"PATCH",
+        body:JSON.stringify({
+          radio_id:Number(r.id),
+          nueva_password:nueva
+        })
+      });
+      input.value="";
+      msg(salida,data.mensaje||"Contraseña actualizada correctamente.","ok");
+    }catch(e){
+      msg(salida,e.message||"No se pudo cambiar la contraseña.");
+    }finally{
+      boton.disabled=false;
+    }
+  };
+
+  $("recordatorioRenovacionBtn").onclick=async()=>{
+    const boton=$("recordatorioRenovacionBtn");
+    const salida=$("recordatorioRenovacionMsg");
+    limpiar(salida);
+    boton.disabled=true;
+
+    try{
+      const data=await request("/api/admin/recordatorio-renovacion",{
+        method:"POST",
+        body:JSON.stringify({radio_id:Number(r.id)})
+      });
+
+      if(data.ya_renovo){
+        msg(salida,data.mensaje||"Esta emisora ya renovó el próximo período.","ok");
+        return;
+      }
+
+      const tel=String(data.radio?.telefono||r.telefono||"").replace(/\D/g,"");
+      if(!tel){
+        msg(salida,"El link de renovación fue generado, pero esta emisora no tiene WhatsApp cargado.");
+        return;
+      }
+
+      const responsable=data.radio?.responsable||r.responsable||"";
+      const nombreRadio=data.radio?.nombre_radio||r.nombre_radio||"tu emisora";
+      const periodo=data.renovacion?.periodo||"";
+      const meses=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+      let periodoLegible="el próximo mes";
+      if(/^\d{4}-\d{2}$/.test(periodo)){
+        const [anio,mes]=periodo.split("-").map(Number);
+        if(mes>=1&&mes<=12) periodoLegible=`${meses[mes-1]} ${anio}`;
+      }
+      const importe=Number(data.renovacion?.importe_total||0).toLocaleString("es-AR");
+      const link=data.renovacion?.checkout_url||"";
+
+      const saludoEmoji="\u{1F44B}";
+      const calendarioEmoji="\u{1F4C5}";
+      const tarjetaEmoji="\u{1F4B3}";
+      const texto=`Hola ${responsable || ""}\n\nTe recordamos que está próxima la renovación de NELQP para ${nombreRadio}.\n\nPróximo período: ${periodoLegible}\nRenovación: $ ${importe}\n\nPara evitar que la retransmisión se interrumpa al comenzar el nuevo mes, podés renovar desde este link:\n${link}\n\nUna vez acreditado el pago, el nuevo período quedará preparado y desde el panel de la emisora podrás obtener el enlace de retransmisión correspondiente.\n\nLa ON Radio · No Es Lo Que Parece`;
+      const whatsapp=`https://wa.me/${tel}?text=${encodeURIComponent(texto)}`;
+
+      msg(salida,`Recordatorio de ${periodoLegible} preparado. Se abrirá WhatsApp para enviarlo.`,"ok");
+      window.open(whatsapp,"_blank","noopener");
+    }catch(e){
+      msg(salida,e.message||"No se pudo preparar el recordatorio de renovación.");
+    }finally{
+      boton.disabled=false;
+    }
+  };
+
+  $("estadoRadioBtn").onclick=async()=>{
+    const boton=$("estadoRadioBtn");
+    const salida=$("estadoRadioMsg");
+    const suspendida=String(r.estado||"").toLowerCase()==="suspendido";
+    const accion=suspendida?"reactivar":"suspender";
+    limpiar(salida);
+
+    const pregunta=suspendida
+      ?`¿Reactivar ${r.nombre_radio||"esta radio"}? El sistema comprobará si tiene una contratación vigente.`
+      :`¿Suspender ${r.nombre_radio||"esta radio"}? No se borrarán pagos, contrataciones ni vencimiento.`;
+
+    if(!confirm(pregunta)) return;
+
+    boton.disabled=true;
+    try{
+      const data=await request("/api/admin/estado-radio",{
+        method:"PATCH",
+        body:JSON.stringify({radio_id:Number(r.id),accion})
+      });
+      msg(salida,data.mensaje||(suspendida?"Radio reactivada correctamente.":"Radio suspendida correctamente."),"ok");
+      await cargarRadios();
+      const actualizada=radiosCache.find(x=>String(x.id)===String(r.id));
+      if(actualizada) setTimeout(()=>abrirFicha(actualizada.id),250);
+    }catch(e){
+      msg(salida,e.message||"No se pudo cambiar el estado de la emisora.");
+      boton.disabled=false;
+    }
+  };
+
+  box.scrollIntoView({behavior:"smooth",block:"start"});
+
+  try{
+    const [contr,pagos]=await Promise.all([
+      request("/api/admin/contrataciones"),
+      request(`/api/admin/pagos?radio_id=${encodeURIComponent(r.id)}`)
+    ]);
+    const cs=(contr.contrataciones||[]).filter(x=>String(x.radio_id)===String(r.id));
+    const ps=(pagos.pagos||[]).filter(x=>String(x.radio_id)===String(r.id));
+    $("detalleServidor").innerHTML=`
+      <h3>Contrataciones</h3>
+      <div class="table-wrap"><table class="mini-table"><thead><tr><th>ID contratación</th><th>Período</th><th>Modalidad</th><th>Importe</th><th>Estado</th><th>Desde</th><th>Hasta</th><th>Pago manual</th></tr></thead>
+      <tbody>${cs.length?cs.map(c=>`<tr><td><strong>#${Number(c.id)}</strong></td><td>${valor(c.periodo)}</td><td>${valor(c.modalidad)}</td><td>$ ${Number(c.importe_total||0).toLocaleString("es-AR")}</td><td><span class="badge ${esc(String(c.estado||"").toLowerCase())}">${valor(c.estado)}</span></td><td>${fecha(c.fecha_inicio)}</td><td>${fecha(c.fecha_fin)}</td><td>${String(c.estado||"").toLowerCase()==="pendiente"?`<button class="success-action aprobar-manual-btn" data-contratacion-id="${Number(c.id)}" data-periodo="${esc(c.periodo||"")}" data-importe="${Number(c.importe_total||0)}">Aprobar transferencia</button>`:"—"}</td></tr>`).join(""):`<tr><td colspan="8">No hay contrataciones registradas.</td></tr>`}</tbody></table></div>
+      <div class="detail-section"><h3>Pagos</h3>
+      <div class="table-wrap"><table class="mini-table"><thead><tr><th>Período</th><th>Importe</th><th>Estado</th><th>Referencia</th><th>Fecha</th></tr></thead>
+      <tbody>${ps.length?ps.map(p=>`<tr><td>${valor(p.periodo)}</td><td>$ ${Number(p.importe_total||0).toLocaleString("es-AR")}</td><td><span class="badge ${esc(String(p.estado_pago||p.estado||"").toLowerCase())}">${valor(p.estado_pago||p.estado)}</span></td><td>${valor(p.referencia_pago)}</td><td>${fecha(p.fecha_pago)}</td></tr>`).join(""):`<tr><td colspan="5">No hay pagos registrados para esta radio.</td></tr>`}</tbody></table></div></div>`;
+
+    $("detalleServidor").querySelectorAll(".aprobar-manual-btn").forEach(btn=>{
+      btn.onclick=async()=>{
+        const id=Number(btn.dataset.contratacionId);
+        const periodo=btn.dataset.periodo||"";
+        const importe=Number(btn.dataset.importe||0);
+        if(!confirm(`¿Confirmás que recibiste la transferencia de $ ${importe.toLocaleString("es-AR")} correspondiente a ${periodo}?\n\nAl aprobarla, el sistema acreditará el pago y habilitará la emisora cuando corresponda.`)) return;
+        btn.disabled=true; btn.textContent="Aprobando…";
+        try{
+          const data=await request("/api/admin/aprobar-pago-manual",{method:"PATCH",body:JSON.stringify({contratacion_id:id})});
+          alert(data.mensaje||"Transferencia aprobada correctamente.");
+          await cargarRadios();
+          const actualizada=radiosCache.find(x=>String(x.id)===String(r.id));
+          if(actualizada) setTimeout(()=>abrirFicha(actualizada.id),250);
+        }catch(e){
+          alert(e.message||"No se pudo aprobar la transferencia.");
+          btn.disabled=false; btn.textContent="Aprobar transferencia";
+        }
+      };
+    });
+  }catch(e){
+    $("detalleServidor").innerHTML=`<div class="error">La ficha básica está disponible, pero no se pudieron cargar los movimientos: ${esc(e.message)}</div>`;
+  }
+}
+
+$("radiosBody").addEventListener("click",e=>{
+  const tr=e.target.closest(".radio-row");
+  if(tr) abrirFicha(tr.dataset.radioId);
+});
+
+async function cargarPrecios(){
+  limpiar($("preciosMsg"));
+  $("recargarPreciosBtn").disabled=true;
+  try{
+    const data=await request("/api/admin/configuracion");
+    const c=data.configuracion||{};
+    $("precioMensual").value=Number(c.precio_mensual||0);
+    $("precioPrograma").value=Number(c.precio_programa||0);
+    $("vigenteDesde").value=String(c.vigente_desde||"").slice(0,10);
+  }catch(e){
+    msg($("preciosMsg"),e.message||"No se pudo cargar la configuración comercial.");
+  }finally{
+    $("recargarPreciosBtn").disabled=false;
+  }
+}
+
+async function guardarPrecios(){
+  limpiar($("preciosMsg"));
+  const mensual=Number($("precioMensual").value);
+  const programa=Number($("precioPrograma").value);
+  const vigente=$("vigenteDesde").value;
+
+  if(!Number.isInteger(mensual)||mensual<=0){msg($("preciosMsg"),"Ingresá un precio mensual válido.");return}
+  if(!Number.isInteger(programa)||programa<=0){msg($("preciosMsg"),"Ingresá un precio por programa válido.");return}
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(vigente)){msg($("preciosMsg"),"Elegí la fecha de vigencia.");return}
+
+  const texto=`¿Confirmás el cambio de precios?\n\nPrecio mensual: $ ${mensual.toLocaleString("es-AR")}\nPrecio por programa: $ ${programa.toLocaleString("es-AR")}\nVigente desde: ${fecha(vigente)}\n\nLas contrataciones ya creadas conservarán sus importes.`;
+  if(!confirm(texto)) return;
+
+  $("guardarPreciosBtn").disabled=true;
+  $("guardarPreciosBtn").textContent="Guardando…";
+  try{
+    const data=await request("/api/admin/precios",{
+      method:"PATCH",
+      body:JSON.stringify({precio_mensual:mensual,precio_programa:programa,vigente_desde:vigente})
+    });
+    msg($("preciosMsg"),data.mensaje||"Configuración comercial actualizada correctamente.","ok");
+    await cargarPrecios();
+  }catch(e){
+    msg($("preciosMsg"),e.message||"No se pudieron actualizar los precios.");
+  }finally{
+    $("guardarPreciosBtn").disabled=false;
+    $("guardarPreciosBtn").textContent="Guardar nuevos precios";
+  }
+}
+
+$("recargarPreciosBtn").addEventListener("click",cargarPrecios);
+$("guardarPreciosBtn").addEventListener("click",guardarPrecios);
+
+async function cargarRadios(){
+  limpiar($("adminMsg"));
+  $("actualizarBtn").disabled=true;
+  try{
+    const data=await request("/api/admin/panel-radios");
+    renderRadios(data.radios||[]);
+  }catch(e){
+    if(e.status===401){localStorage.removeItem(tokenKey);mostrarLogin();msg($("loginMsg"),"La sesión venció. Ingresá nuevamente.");}
+    else msg($("adminMsg"),e.message);
+  }finally{$("actualizarBtn").disabled=false}
+}
+
+$("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();limpiar($("loginMsg"));$("loginBtn").disabled=true;
+  try{
+    const data=await request("/api/admin/login",{method:"POST",body:JSON.stringify({email:$("email").value.trim(),password:$("password").value})});
+    localStorage.setItem(tokenKey,data.token);
+    $("password").value="";
+    mostrarAdmin();
+    await Promise.all([cargarRadios(),cargarPrecios()]);
+  }catch(e){msg($("loginMsg"),e.message)}
+  finally{$("loginBtn").disabled=false}
+});
+
+$("salirBtn").addEventListener("click",()=>{localStorage.removeItem(tokenKey);mostrarLogin()});
+$("actualizarBtn").addEventListener("click",cargarRadios);
+
+(async()=>{
+  const token=localStorage.getItem(tokenKey);
+  if(!token){mostrarLogin();return}
+  try{
+    await request("/api/admin/sesion");
+    mostrarAdmin();
+    await Promise.all([cargarRadios(),cargarPrecios()]);
+  }catch{
+    localStorage.removeItem(tokenKey);
+    mostrarLogin();
+  }
+})();
+</script>
+</body>
+</html>

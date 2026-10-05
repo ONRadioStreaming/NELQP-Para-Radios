@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090509"><title>Mi panel | NELQP para Radios</title>
+<style>
+:root{--bg:#080608;--card:#171117;--pink:#ff176d;--pink2:#ff4d96;--yellow:#ffd84d;--cyan:#55e7ff;--violet:#9d67ff;--text:#fff;--muted:#d0c8cf;--line:rgba(255,255,255,.13);--green:#5ee89a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.5;min-height:100vh;background:radial-gradient(circle at 85% 9%,rgba(255,23,109,.25),transparent 25rem),radial-gradient(circle at 7% 31%,rgba(157,103,255,.14),transparent 24rem),radial-gradient(circle at 90% 62%,rgba(85,231,255,.08),transparent 22rem),var(--bg)}
+a{text-decoration:none;color:inherit}.wrap{width:min(1150px,calc(100% - 32px));margin:auto}
+header{position:sticky;top:0;z-index:30;background:rgba(8,6,8,.87);backdrop-filter:blur(15px);border-bottom:1px solid var(--line)}
+nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:12px;font-weight:900}.brand img{width:76px;height:50px;object-fit:contain}
+.btn,button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:49px;padding:0 21px;border-radius:15px;border:1px solid var(--line);font-weight:900;background:rgba(255,255,255,.04);color:#fff;cursor:pointer;transition:.18s;font-size:15px}
+.btn:hover,button:hover{transform:translateY(-2px)}button:disabled{opacity:.55;cursor:wait}.primary{border:0;background:linear-gradient(135deg,var(--pink2),var(--pink));box-shadow:0 12px 30px rgba(255,23,109,.28)}
+main{padding:52px 0 75px}.eyebrow{display:inline-flex;padding:8px 13px;border-radius:999px;border:1px solid rgba(255,23,109,.5);background:rgba(255,23,109,.1);color:#ff86b4;font-size:13px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+h1{font-size:clamp(39px,6vw,66px);line-height:.96;letter-spacing:-.055em;margin:18px 0}.pink{color:var(--pink)}.lead{font-size:18px;color:#eee8ed;max-width:720px}
+.shell{width:min(850px,100%);margin:0 auto}.card{border:1px solid var(--line);background:linear-gradient(145deg,#1a1419,#0f0d0f);padding:28px;border-radius:24px;box-shadow:0 24px 70px rgba(0,0,0,.28);margin-bottom:17px}
+.login{max-width:620px;margin:28px auto}.login h2,.card h2{margin:0 0 8px}.muted{color:var(--muted)}label{display:block;font-weight:900;margin:16px 0 7px}input{width:100%;height:52px;border-radius:14px;border:1px solid var(--line);background:#0c090c;color:#fff;padding:0 15px;font-size:16px;outline:none}input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,23,109,.12)}
+.hidden{display:none!important}.between{display:flex;justify-content:space-between;align-items:center;gap:14px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.item{border-top:1px solid var(--line);margin-top:17px;padding-top:17px}
+.badge{display:inline-flex;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:950;text-transform:uppercase;border:1px solid var(--line)}.badge.activo,.badge.activa,.badge.pagada,.badge.aprobado{background:rgba(94,232,154,.12);color:#7af0ac;border-color:rgba(94,232,154,.28)}.badge.pendiente{background:rgba(255,216,77,.09);color:var(--yellow);border-color:rgba(255,216,77,.25)}
+.money{font-size:25px;font-weight:950}.ok,.error{display:block;padding:13px 15px;border-radius:14px;margin-top:14px}.ok{background:rgba(94,232,154,.12);color:#91f4b8;border:1px solid rgba(94,232,154,.25)}.error{background:rgba(255,23,109,.12);color:#ff9dc2;border:1px solid rgba(255,23,109,.28)}
+.actions{margin-top:18px}.radio-title{font-size:32px;line-height:1.05;margin:5px 0}.footer{text-align:center;color:#948c92;padding:0 0 35px}.footer img{width:140px;max-height:80px;object-fit:contain;margin-bottom:8px}
+@media(max-width:650px){.wrap{width:calc(100% - 22px)}.brand span{display:none}main{padding-top:34px}.card{padding:22px 18px}.grid{grid-template-columns:1fr}.radio-title{font-size:27px}}
+
+.activation-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.activation-option{border:1px solid var(--line);background:#0c090c;border-radius:18px;padding:22px}
+.activation-option h3{font-size:21px;margin:8px 0}.activation-option .money{margin:15px 0 2px}
+.option-icon{font-size:30px}.help-price{color:var(--muted);font-size:14px;margin-bottom:18px}
+@media(max-width:650px){.activation-grid{grid-template-columns:1fr}}
+
+.stream-card{border-color:rgba(85,231,255,.28);background:linear-gradient(145deg,rgba(85,231,255,.08),#0f0d0f)}
+.stream-url{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#080608;word-break:break-all;font-family:Consolas,monospace;font-size:13px;color:#dffaff}
+.stream-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+</style></head><body>
+<header><div class="wrap"><nav><a class="brand" href="index.html"><img src="logo-on.jpg" alt="La ON Radio"><span>NELQP · PARA RADIOS</span></a><button id="salirBtn">Cerrar sesión</button></nav></div></header>
+<main><div class="wrap shell">
+<div id="loginCard" class="hidden"></div>
+<div id="panel" class="hidden">
+<div class="eyebrow">📻 Panel privado</div><h1>Mi radio en <span class="pink">NELQP.</span></h1><div id="panelMsg"></div>
+<section class="card"><div class="between"><div><div class="muted">Radio</div><div id="radioNombre" class="radio-title">—</div></div><span id="estadoBadge" class="badge">—</span></div>
+<div class="grid item"><div><div class="muted">Responsable</div><strong id="responsable">—</strong></div><div><div class="muted">Localidad</div><strong id="localidad">—</strong></div><div><div class="muted">Acceso vigente hasta</div><strong id="vencimiento">—</strong></div><div><div class="muted">Email</div><strong id="radioEmail">—</strong></div></div></section>
+<section class="card"><h2>📅 Período actual</h2><div id="actualContenido"></div></section>
+<section id="streamCard" class="card stream-card hidden">
+  <div class="between">
+    <div><h2>🎙️ Retransmisión NELQP</h2><div class="muted">Acceso privado para conectar tu emisora al programa.</div></div>
+    <span class="badge activo">HABILITADO</span>
+  </div>
+  <p class="muted">Este es el enlace de retransmisión de tu período actual. Cargalo una sola vez en el software de automatización de tu emisora.</p>
+  <div id="streamMsg"></div>
+  <div id="streamUrl" class="stream-url hidden"></div>
+  <div class="ok" style="margin-top:14px"><strong>Importante para el operador:</strong> el enlace es válido durante el período contratado. Al comenzar el próximo período, ingresá nuevamente a este panel y reemplazalo en el software de automatización de la emisora.</div>
+  <div class="stream-actions">
+    <button id="generarStreamBtn" class="primary" type="button">Obtener enlace de retransmisión</button>
+    <button id="copiarStreamBtn" class="hidden" type="button">Copiar enlace</button>
+  </div>
+</section>
+<section id="renovacionCard" class="card"><div class="between"><h2>🚀 Próxima renovación</h2><span id="renovacionBadge" class="badge">—</span></div><div id="renovacionContenido"></div><div id="renovacionAcciones" class="actions"></div></section>
+<section class="card"><div class="between"><div><strong>Sesión iniciada</strong><div class="muted">Tus datos se actualizan desde el servidor.</div></div><span class="badge activo">segura</span></div></section>
+</div></div></main>
+<div class="footer"><div class="wrap"><img src="logo-on.jpg" alt="La ON Radio"><div>NO ES LO QUE PARECE · Una producción de La ON Radio</div></div></div>
+<script>
+const API="https://nelqp-radios-api.guillermocaballini.workers.dev";
+const $=id=>document.getElementById(id);
+const tokenKey="nelqp_radio_token";
+
+function badge(el,estado){
+  const e=(estado||"sin estado").toLowerCase();
+  el.textContent=e;
+  el.className="badge "+e;
+}
+function dinero(n){return new Intl.NumberFormat("es-AR",{style:"currency",currency:"ARS",maximumFractionDigits:0}).format(Number(n||0))}
+function fecha(f){if(!f)return "—";const [y,m,d]=f.split("-");return `${d}/${m}/${y}`}
+function msg(el,text,tipo="error"){el.innerHTML=`<div class="${tipo}">${text}</div>`}
+function limpiarMsg(el){el.innerHTML=""}
+function mostrarLogin(){window.location.href="login.html"}
+function mostrarPanel(){$("panel").classList.remove("hidden")}
+
+async function api(path,options={}){
+  const token=localStorage.getItem(tokenKey);
+  const headers={"Content-Type":"application/json",...(options.headers||{})};
+  if(token)headers.Authorization=`Bearer ${token}`;
+  const r=await fetch(API+path,{...options,headers});
+  let data;
+  try{data=await r.json()}catch{data={ok:false,error:"Respuesta inválida del servidor"}}
+  if(r.status===401){
+    localStorage.removeItem(tokenKey);
+    mostrarLogin();
+    throw new Error("La sesión venció. Ingresá nuevamente.");
+  }
+  if(!r.ok||data.ok===false){
+    const err=new Error(data.error||"No se pudo completar la operación");
+    err.status=r.status; err.data=data; throw err;
+  }
+  return data;
+}
+
+async function cargarPanel(){
+  limpiarMsg($("panelMsg"));
+  const d=await api("/api/mi-panel");
+  mostrarPanel();
+
+  const r=d.radio||{};
+  $("radioNombre").textContent=r.nombre_radio||"—";
+  $("responsable").textContent=r.responsable||"—";
+  $("localidad").textContent=[r.ciudad,r.provincia].filter(Boolean).join(", ")||"—";
+  $("vencimiento").textContent=fecha(r.fecha_vencimiento);
+  $("radioEmail").textContent=r.email||"—";
+  badge($("estadoBadge"),r.estado);
+  const accesoStream=Boolean(d.resumen?.acceso_vigente)&&r.estado==="activo";
+  $("streamCard").classList.toggle("hidden",!accesoStream);
+  if(!accesoStream){
+    $("streamUrl").textContent="";
+    $("streamUrl").classList.add("hidden");
+    $("copiarStreamBtn").classList.add("hidden");
+    limpiarMsg($("streamMsg"));
+  }
+
+  const c=d.contratacion;
+  $("actualContenido").innerHTML=c?`
+    <div class="between"><div><div class="muted">Período</div><strong>${c.periodo}</strong></div><span class="badge ${r.estado==="suspendido"?"pendiente":c.estado}">${r.estado==="suspendido"?"ACCESO SUSPENDIDO":c.estado}</span></div>
+    ${r.estado==="suspendido" ? `<div class="error" style="margin-top:16px"><strong>🔒 Retransmisión suspendida</strong><br>Tu contratación continúa vigente, pero el acceso a la señal se encuentra suspendido.<br><strong>Contactate con el administrador de NELQP para restablecerlo.</strong></div>` : ""}
+    <div class="grid item">
+      <div><div class="muted">Desde</div><strong>${fecha(c.fecha_inicio)}</strong></div>
+      <div><div class="muted">Hasta</div><strong>${fecha(c.fecha_fin)}</strong></div>
+      <div><div class="muted">Importe</div><strong>${dinero(c.importe_total)}</strong></div>
+      <div><div class="muted">Pago</div><strong>${d.pago?.estado||"—"}</strong></div>
+    </div>
+    ${c.estado==="pendiente" ? `
+      <div style="margin-top:18px">
+        <div class="actions">
+          <button id="continuarPagoActualBtn" class="primary">
+            ${c.checkout_url ? "Continuar pago con Mercado Pago" : "Pagar con Mercado Pago"}
+          </button>
+          <button id="transferenciaActualBtn" class="secondary">Pagar por transferencia</button>
+        </div>
+      </div>
+    ` : ""}`:`<p class="muted">Todavía no tenés un período activo.</p>`;
+
+  if(c?.estado==="pendiente"){
+    const btnPagoActual=$("continuarPagoActualBtn");
+    if(btnPagoActual){
+      btnPagoActual.onclick=()=>pagarContratacion(c.id,c.checkout_url,btnPagoActual);
+    }
+    const btnTransferenciaActual=$("transferenciaActualBtn");
+    if(btnTransferenciaActual){
+      btnTransferenciaActual.onclick=()=>mostrarTransferencia(c);
+    }
+  }
+
+  if(!c){
+    await mostrarPrimeraContratacion();
+  }else{
+    mostrarRenovacion(d);
+  }
+}
+
+async function mostrarPrimeraContratacion(){
+  const cot=await api("/api/cotizacion");
+  const box=$("renovacionCard");
+  box.innerHTML=`
+    <div class="between">
+      <div><div class="eyebrow">🚀 Primera contratación</div><h2 style="margin-top:14px">Activá NELQP en tu radio</h2></div>
+      <span class="badge pendiente">PENDIENTE</span>
+    </div>
+    <p class="muted">Elegí cuándo querés comenzar a retransmitir el programa.</p>
+    <div class="activation-grid">
+      <div class="activation-option">
+        <div class="option-icon">⚡</div>
+        <h3>Empezar ahora</h3>
+        <p class="muted">Acceso desde ahora hasta fin de este mes.</p>
+        <div class="money">${dinero(cot.opciones.inmediato.importe)}</div>
+        <div class="help-price">${cot.opciones.inmediato.programas} programas restantes × ${dinero(cot.opciones.inmediato.precio_por_programa)}</div>
+        <button class="primary" onclick="contratar('inmediato',this)">Empezar ahora</button>
+      </div>
+      <div class="activation-option">
+        <div class="option-icon">📅</div>
+        <h3>Empezar el próximo mes</h3>
+        <p class="muted">Mes completo desde el día 1 del próximo período.</p>
+        <div class="money">${dinero(cot.opciones.proximo_mes.importe)}</div>
+        <div class="help-price">Plan mensual completo</div>
+        <button class="primary" onclick="contratar('proximo_mes',this)">Empezar próximo mes</button>
+      </div>
+    </div>`;
+}
+
+function mostrarRenovacion(d){
+  const ren=d.renovacion;
+  const box=$("renovacionCard");
+  box.innerHTML=`
+    <div class="between"><h2>🚀 Próxima renovación</h2><span id="renovacionBadge" class="badge">—</span></div>
+    <div id="renovacionContenido"></div><div id="renovacionAcciones" class="actions"></div>`;
+  const acciones=$("renovacionAcciones");
+  if(ren){
+    badge($("renovacionBadge"),ren.estado);
+    $("renovacionContenido").innerHTML=`
+      <div class="grid">
+        <div><div class="muted">Período</div><strong>${ren.periodo}</strong></div>
+        <div><div class="muted">Importe</div><span class="money">${dinero(ren.importe_total)}</span></div>
+        <div><div class="muted">Desde</div><strong>${fecha(ren.fecha_inicio)}</strong></div>
+        <div><div class="muted">Hasta</div><strong>${fecha(ren.fecha_fin)}</strong></div>
+      </div>`;
+    if(ren.estado==="pendiente"){
+      const b=document.createElement("button");b.className="primary";
+      b.textContent=ren.checkout_url?"Pagar renovación":"Generar pago";
+      b.onclick=()=>pagarContratacion(ren.id,ren.checkout_url,b);acciones.appendChild(b);
+      const t=document.createElement("button");t.className="secondary";t.textContent="Pagar por transferencia";
+      t.onclick=()=>mostrarTransferencia(ren);acciones.appendChild(t);
+    }else if(ren.estado==="pagada"){
+      acciones.innerHTML='<span class="ok">Renovación pagada. Se activará cuando comience el nuevo período.</span>';
+    }
+  }else{
+    badge($("renovacionBadge"),"pendiente");$("renovacionBadge").textContent="NO GENERADA";
+    $("renovacionContenido").innerHTML='<p class="muted">Todavía no generaste la renovación del próximo mes.</p>';
+    const b=document.createElement("button");b.className="primary";b.textContent="Renovar próximo mes";
+    b.onclick=crearRenovacion;acciones.appendChild(b);
+  }
+}
+
+async function contratar(modalidad,btn){
+  limpiarMsg($("panelMsg"));
+  const original=btn.textContent;btn.disabled=true;btn.textContent="Preparando pago…";
+  try{
+    let contratacionId;
+    try{
+      const d=await api("/api/contratacion",{method:"POST",body:JSON.stringify({modalidad})});
+      contratacionId=d.contratacion?.id||d.id;
+    }catch(err){
+      if(err.status===409&&err.data?.contratacion_existente?.id){
+        contratacionId=err.data.contratacion_existente.id;
+      }else throw err;
+    }
+    if(!contratacionId)throw new Error("No se recibió el número de contratación.");
+    await cargarPanel();
+  }catch(err){
+    msg($("panelMsg"),err.message);btn.disabled=false;btn.textContent=original;
+  }
+}
+
+function mostrarTransferencia(c){
+  const importe=dinero(c.importe_total);
+  const periodo=c.periodo||"—";
+  const radio=$('radioNombre')?.textContent?.trim()||"Mi emisora";
+  const texto=`Hola, realicé la transferencia para NELQP.%0A%0AEmisora: ${encodeURIComponent(radio)}%0APeríodo: ${encodeURIComponent(periodo)}%0AImporte: ${encodeURIComponent(importe)}%0AContratación: ${encodeURIComponent(c.id)}%0A%0AAdjunto comprobante de pago.`;
+  const whatsapp=`https://wa.me/5491161358000?text=${texto}`;
+  const box=document.createElement("div");
+  box.className="card";
+  box.style.marginTop="18px";
+  box.innerHTML=`
+    <div class="eyebrow">🏦 PAGO POR TRANSFERENCIA</div>
+    <h2 style="margin-top:12px">Datos para transferir</h2>
+    <div class="grid" style="margin-top:14px">
+      <div><div class="muted">Titular</div><strong>Guillermo German Caballini</strong></div>
+      <div><div class="muted">Alias</div><strong>laonradio.rojas</strong></div>
+      <div><div class="muted">Período</div><strong>${periodo}</strong></div>
+      <div><div class="muted">Importe exacto</div><strong class="money">${importe}</strong></div>
+    </div>
+    <p class="muted" style="margin-top:16px">Transferí exactamente ese importe y luego enviá el comprobante. La emisora se habilitará cuando NELQP confirme la acreditación.</p>
+    <div class="actions">
+      <button class="primary" id="enviarComprobanteBtn">📲 Enviar comprobante por WhatsApp</button>
+      <button class="secondary" id="cerrarTransferenciaBtn">Cerrar</button>
+    </div>`;
+  const anterior=document.getElementById("transferenciaBox"); if(anterior) anterior.remove();
+  box.id="transferenciaBox";
+  $("panelMsg").insertAdjacentElement("afterend",box);
+  box.querySelector("#enviarComprobanteBtn").onclick=()=>window.open(whatsapp,"_blank","noopener");
+  box.querySelector("#cerrarTransferenciaBtn").onclick=()=>box.remove();
+  box.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+async function pagarContratacion(id,checkoutUrl,btn){
+  if(checkoutUrl){window.location.href=checkoutUrl;return}
+  if(btn){btn.disabled=true;btn.textContent="Abriendo Mercado Pago…"}
+  const d=await api("/api/pago/crear",{method:"POST",body:JSON.stringify({contratacion_id:id})});
+  const url=d?.pago?.checkout_url||d?.checkout_url;
+  if(!url)throw new Error("No se recibió el enlace de Mercado Pago.");
+  window.location.href=url;
+}
+
+async function crearRenovacion(){
+  limpiarMsg($("panelMsg"));
+  try{await api("/api/renovacion",{method:"POST",body:""});await cargarPanel()}
+  catch(err){msg($("panelMsg"),err.message)}
+}
+
+
+
+async function generarAccesoStream(){
+  const btn=$("generarStreamBtn");
+  const original=btn.textContent;
+  limpiarMsg($("streamMsg"));
+  btn.disabled=true;
+  btn.textContent="Generando acceso…";
+  try{
+    const d=await api("/api/stream/acceso",{method:"POST",body:"{}"});
+    if(!d.stream_url)throw new Error("El servidor no devolvió el enlace de retransmisión.");
+    $("streamUrl").textContent=d.stream_url;
+    $("streamUrl").classList.remove("hidden");
+    $("copiarStreamBtn").classList.remove("hidden");
+    const periodo=d.periodo||"actual";
+    const hasta=d.fecha_fin?fecha(d.fecha_fin):"el fin del período";
+    msg($("streamMsg"),`Enlace ${periodo} habilitado hasta ${hasta}. Al comenzar un nuevo período deberás actualizarlo en el software de automatización de tu emisora.`,"ok");
+  }catch(err){
+    msg($("streamMsg"),err.message);
+  }finally{
+    btn.disabled=false;
+    btn.textContent=original;
+  }
+}
+
+async function copiarAccesoStream(){
+  const url=$("streamUrl").textContent.trim();
+  if(!url)return;
+  try{
+    await navigator.clipboard.writeText(url);
+    msg($("streamMsg"),"Enlace copiado. Ya podés pegarlo en el software de tu radio.","ok");
+  }catch{
+    msg($("streamMsg"),"No se pudo copiar automáticamente. Seleccioná el enlace y copialo manualmente.");
+  }
+}
+
+$("generarStreamBtn").addEventListener("click",generarAccesoStream);
+$("copiarStreamBtn").addEventListener("click",copiarAccesoStream);
+
+$("salirBtn").addEventListener("click",()=>{localStorage.removeItem(tokenKey);window.location.href="login.html"});
+
+(async()=>{
+  if(localStorage.getItem(tokenKey)){
+    try{await cargarPanel()}catch(err){if(err.status!==401)msg($("panelMsg"),err.message)}
+  }else window.location.href="login.html";
+})();
+</script></body></html>
